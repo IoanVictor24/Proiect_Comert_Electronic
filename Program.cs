@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using ProiectCE.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,46 @@ builder.Services.AddControllers();
 
 // 3. Adaugă serviciul Swagger (pentru testare)
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    // Adaugă opțiunea de a introduce token-ul Bearer direct în Swagger UI
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Te rog introdu Token-ul JWT (Bearer token) în câmpul de mai jos.",
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+    });
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
+// 4. Configurare Autentificare (JWT Bearer) - PAS NOU!
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true, // Validare Cheie Secretă
+            // Extrage cheia secretă din AppSettings:Token (din appsettings.json)
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+            ValidateIssuer = false, // Dezactivat pentru mediu local
+            ValidateAudience = false // Dezactivat pentru mediu local
+        };
+    });
+
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
@@ -36,29 +78,27 @@ var app = builder.Build();
 
 // ----------------------------------------------------------------------
 // PASUL 3: CONFIGURAREA MIDDLEWARE-ULUI (Ordinea este importantă aici)
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    // ADAUGĂ AICI CONFIGURAREA RUTĂRII SWAGGER:
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProiectCE API v1");
-    });
-}
 // ----------------------------------------------------------------------
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    // Configurează ruta Swagger (cu opțiunile adăugate anterior)
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProiectCE API v1");
+    });
 }
 
 app.UseHttpsRedirection();
+
+// ADĂUGARE MIDDLEWARE DE AUTENTIFICARE ȘI AUTORIZARE (Ordinea este crucială: Auth înainte de Map)
+app.UseAuthentication(); // <-- Adaugă/Decomentează
+app.UseAuthorization();  // <-- Adaugă/Decomentează
 app.UseCors("AllowAll");
 // app.UseAuthorization(); // Îl vom adăuga când implementăm JWT
 
-app.MapControllers(); // Harta rutele Controller-elor (inclusiv AuthController)
+app.MapControllers(); // Harta rutele Controller-elor
 
 app.Run();
