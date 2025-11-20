@@ -1,31 +1,46 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ProiectCE.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ----------------------------------------------------------------------
+// PASUL 1: TOATE SERVICIILE SE ADJUGĂ AICI
+// ----------------------------------------------------------------------
 
+// 1. Configurarea Bazei de Date (DbContext)
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    //options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+//);
+
+// 2. Adaugă serviciul pentru Controller-e (inclusiv AuthController-ul nostru)
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
+// 3. Adaugă serviciul Swagger (pentru testare)
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// ----------------------------------------------------------------------
+// PASUL 2: CONSTRUIREA APLICAȚIEI
+// ----------------------------------------------------------------------
 var app = builder.Build();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    // Folosește SQLite, citind stringul de conexiune "DefaultConnection" din appsettings.json
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+
+// ----------------------------------------------------------------------
+// PASUL 3: CONFIGURAREA MIDDLEWARE-ULUI (Ordinea este importantă aici)
+// ----------------------------------------------------------------------
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+// app.UseAuthorization(); // Îl vom adăuga când implementăm JWT
 
-app.MapControllers();
+app.MapControllers(); // Harta rutele Controller-elor (inclusiv AuthController)
 
 app.Run();
