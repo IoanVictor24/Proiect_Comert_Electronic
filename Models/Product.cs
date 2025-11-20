@@ -15,6 +15,6 @@ namespace ProiectCE.Models
         public int CategoryId { get; set; }
 
         // Proprietate de navigare: îți permite să accesezi detaliile Categoriei
-        public Category Category { get; set; } 
+        public Category? Category { get; set; } 
     }
 }
