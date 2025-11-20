@@ -60,6 +60,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
+builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 // ----------------------------------------------------------------------
 // PASUL 2: CONSTRUIREA APLICAȚIEI
 // ----------------------------------------------------------------------
@@ -86,6 +96,8 @@ app.UseHttpsRedirection();
 // ADĂUGARE MIDDLEWARE DE AUTENTIFICARE ȘI AUTORIZARE (Ordinea este crucială: Auth înainte de Map)
 app.UseAuthentication(); // <-- Adaugă/Decomentează
 app.UseAuthorization();  // <-- Adaugă/Decomentează
+app.UseCors("AllowAll");
+// app.UseAuthorization(); // Îl vom adăuga când implementăm JWT
 
 app.MapControllers(); // Harta rutele Controller-elor
 
