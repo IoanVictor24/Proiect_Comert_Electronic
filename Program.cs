@@ -9,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // ----------------------------------------------------------------------
 
 // 1. Configurarea Bazei de Date (DbContext)
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    //options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
-//);
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 // 2. Adaugă serviciul pentru Controller-e (inclusiv AuthController-ul nostru)
 builder.Services.AddControllers();
@@ -28,6 +28,16 @@ var app = builder.Build();
 
 // ----------------------------------------------------------------------
 // PASUL 3: CONFIGURAREA MIDDLEWARE-ULUI (Ordinea este importantă aici)
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    // ADAUGĂ AICI CONFIGURAREA RUTĂRII SWAGGER:
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProiectCE API v1");
+    });
+}
 // ----------------------------------------------------------------------
 
 // Configure the HTTP request pipeline.
