@@ -1,4 +1,4 @@
-namespace CatalogRestApi.Models
+namespace ProiectCE.Models
 {
     public class User
     {

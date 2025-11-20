@@ -1,6 +1,6 @@
 using System.Collections.Generic; // Nevoie pentru ICollection
 
-namespace CatalogRestApi.Models
+namespace ProiectCE.Models
 {
     public class Category
     {

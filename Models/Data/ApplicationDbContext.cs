@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using CatalogRestApi.Models; // Foarte important: importă modelele noastre
+using ProiectCE.Models;
 
-namespace CatalogRestApi.Data
+namespace ProiectCE.Data
 {
     public class ApplicationDbContext : DbContext
     {
