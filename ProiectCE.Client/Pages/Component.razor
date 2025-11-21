@@ -1,0 +1,73 @@
+﻿@page "/products"
+@using ProiectCE.Client.Models
+@inject HttpClient Http
+
+<PageTitle>Produse</PageTitle>
+
+<h1>Catalog Produse</h1>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <input @bind="searchText" class="form-control" placeholder="Caută produs..." />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary" @onclick="SearchProducts">Caută</button>
+    </div>
+</div>
+
+@if (products == null)
+{
+    <p><em>Se încarcă produsele...</em></p>
+}
+else
+{
+    <div class="row">
+        @foreach (var product in products)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@product.Price RON</h6>
+                        <p class="card-text">@product.Description</p>
+                        <small class="text-muted">Stoc: @product.Stock | Furnizor: @product.Supplier</small>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-outline-info btn-sm">Detalii</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private Product[]? products;
+    private string searchText = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Încarcă toate produsele la început
+        await LoadProducts();
+    }
+
+    private async Task LoadProducts()
+    {
+        // ATENȚIE: Aici trebuie să pui portul corect al Backend-ului tău!
+        // Verifică fișierul launchSettings.json din Backend pentru portul https (ex: 7051)
+        products = await Http.GetFromJsonAsync<Product[]>("https://localhost:7051/api/Products");
+    }
+
+    private async Task SearchProducts()
+    {
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            await LoadProducts();
+        }
+        else
+        {
+            // Apelează endpoint-ul de căutare făcut de colega ta
+            products = await Http.GetFromJsonAsync<Product[]>($"https://localhost:7051/api/Products/search/{searchText}");
+        }
+    }
+}
