@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProiectCE.Client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a8bcfb4641c2f2396641ddea46f1b30a826c029d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+92afefef19c4d0b8347accf13880d59a58c097a9")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProiectCE.Client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProiectCE.Client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

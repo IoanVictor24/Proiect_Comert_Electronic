@@ -1,0 +1,43 @@
+﻿@page "/cart"
+@using ProiectCE.Client.Services
+@inject CartService CartService
+
+<div class="container mt-4">
+    <h3>🛒 Coșul meu de cumpărături</h3>
+
+    @if (!CartService.SelectedItems.Any())
+    {
+        <p>Coșul este gol. Mergi la <a href="/products">produse</a> pentru a alege ceva.</p>
+    }
+    else
+    {
+        <table class="table table-hover mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Produs</th>
+                    <th>Preț Unitat</th>
+                    <th>Cantitate</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in CartService.SelectedItems)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Product.Price RON</td>
+                        <td>@item.Quantity</td>
+                        <td>@(item.Product.Price * item.Quantity) RON</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-end mt-4">
+            <div class="card p-3 shadow-sm">
+                <h4>Total de plată: <span class="text-primary">@CartService.GetTotal() RON</span></h4>
+                <button class="btn btn-primary btn-lg mt-2">Finalizează Comanda</button>
+            </div>
+        </div>
+    }
+</div>

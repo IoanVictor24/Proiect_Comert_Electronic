@@ -2,9 +2,13 @@
 @using ProiectCE.Client.Models
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient Http
+<<<<<<< Updated upstream
 @inject NavigationManager NavManager
 @inject IJSRuntime JS
 
+=======
+@inject ProiectCE.Client.Services.CartService CartService
+>>>>>>> Stashed changes
 <PageTitle>Catalog Produse</PageTitle>
 
 <div class="container mt-4">
@@ -45,6 +49,16 @@
                             <span class="badge bg-info text-dark mb-2">@product.Category?.Name</span>
                             <h4 class="text-primary">@product.Price RON</h4>
                             <p class="card-text text-muted small">@product.Description</p>
+<<<<<<< Updated upstream
+=======
+                            <div class="mt-3">
+                                <small class="d-block text-muted"><strong>Furnizor:</strong> @product.Supplier</small>
+                                <small class="d-block text-muted"><strong>Stoc:</strong> @product.Stock buc.</small>
+                                <button class="btn btn-success w-100 mt-2" @onclick="() => AddToCart(product)">
+                                    🛒 Adaugă în coș
+                                </button>
+                            </div>
+>>>>>>> Stashed changes
                         </div>
                         
                         <AuthorizeView Roles="admin">
@@ -86,6 +100,12 @@
     {
         if (string.IsNullOrWhiteSpace(searchText)) await LoadProducts();
         else products = await Http.GetFromJsonAsync<Product[]>($"https://localhost:7051/api/Products/search?q={searchText}");
+    }
+    private void AddToCart(Product p)
+    {
+        CartService.AddProductToCart(p);
+        // Putem pune un mesaj în consolă să vedem că merge
+        Console.WriteLine($"Produs adăugat: {p.Name}. Total coș: {CartService.GetTotal()} RON");
     }
 
     private async Task HandleSearch(KeyboardEventArgs e) { if (e.Key == "Enter") await SearchProducts(); }

@@ -9,9 +9,14 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+<<<<<<< Updated upstream
 
 // Configurare Autentificare
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
 await builder.Build().RunAsync();
+=======
+builder.Services.AddSingleton<ProiectCE.Client.Services.CartService>();
+await builder.Build().RunAsync();
+>>>>>>> Stashed changes
