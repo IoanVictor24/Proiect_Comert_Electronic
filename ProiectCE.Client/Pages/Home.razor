@@ -1,7 +1,98 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Magazin Electronic - Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="hero-section text-center text-white d-flex align-items-center justify-content-center">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-3">Tehnologia de mâine, azi la tine.</h1>
+        <p class="lead mb-4">Descoperă cele mai noi gadget-uri, laptopuri și accesorii la prețuri imbatabile.</p>
+        <a href="products" class="btn btn-light btn-lg rounded-pill px-5 fw-bold shadow-sm action-btn">
+            Vezi Produsele
+        </a>
+    </div>
+</div>
 
-Welcome to your new app.
+<div class="container my-5">
+    <h2 class="text-center mb-4 fw-bold" style="color: #2c3e50;">Categorii Populare</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="category-card p-4 text-center shadow-sm rounded">
+                <i class="bi bi-laptop fs-1 text-primary mb-3"></i>
+                <h3>Laptopuri</h3>
+                <p class="text-muted">Pentru gaming și business.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="category-card p-4 text-center shadow-sm rounded">
+                <i class="bi bi-phone fs-1 text-primary mb-3"></i>
+                <h3>Telefoane</h3>
+                <p class="text-muted">Ultima generație de smart tech.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="category-card p-4 text-center shadow-sm rounded">
+                <i class="bi bi-headphones fs-1 text-primary mb-3"></i>
+                <h3>Accesorii</h3>
+                <p class="text-muted">Căști, ceasuri și periferice.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-truck fs-2 text-success"></i>
+                <h5 class="mt-2">Livrare Rapidă</h5>
+                <small>În 24h la ușa ta.</small>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-shield-check fs-2 text-success"></i>
+                <h5 class="mt-2">Garanție Extinsă</h5>
+                <small>2 ani la orice produs.</small>
+            </div>
+            <div class="col-md-4 mb-3">
+                <i class="bi bi-arrow-repeat fs-2 text-success"></i>
+                <h5 class="mt-2">Retur Simplu</h5>
+                <small>30 de zile drept de retur.</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Gradient modern care se potrivește cu meniul tău mov */
+    .hero-section {
+        background: linear-gradient(135deg, #1a0b2e 0%, #461da8 100%);
+        min-height: 450px;
+        border-radius: 0 0 20px 20px;
+        margin-top: -1.5rem; /* Ajustare ca să se lipească de sus */
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+        padding: 2rem;
+    }
+
+    /* Efect la butonul principal */
+    .action-btn {
+        color: #461da8;
+        transition: transform 0.2s;
+    }
+    .action-btn:hover {
+        transform: scale(1.05);
+        color: #1a0b2e;
+    }
+
+    /* Cardurile de categorii */
+    .category-card {
+        background: white;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #eee;
+        cursor: pointer;
+    }
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        border-color: #461da8;
+    }
+</style>
