@@ -1037,6 +1037,7 @@ C:\Users\Administrator\Documents\GitHub\ProiectCE.Client\obj\Debug\net8.0\Proiec
 C:\Users\Administrator\Documents\GitHub\ProiectCE.Client\obj\Debug\net8.0\refint\ProiectCE.Client.dll
 C:\Users\Administrator\Documents\GitHub\ProiectCE.Client\obj\Debug\net8.0\ProiectCE.Client.pdb
 C:\Users\Administrator\Documents\GitHub\ProiectCE.Client\obj\Debug\net8.0\ref\ProiectCE.Client.dll
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\blazor.boot.json
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\blazor.webassembly.js
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.js.map
@@ -1049,6 +1050,7 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\icudt_EFIGS.dat
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\icudt_no_CJK.dat
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Authorization.wasm
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Authorization.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Forms.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Web.wasm
@@ -1077,6 +1079,8 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.Win32.Registry.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\mscorlib.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\netstandard.wasm
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.pdb
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.AppContext.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Buffers.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Collections.Concurrent.wasm
@@ -1241,6 +1245,7 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\WindowsBase.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.WebAssembly.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.CSharp.wasm.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetCore.Components.Authorization.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.Win32.Registry.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Formats.Tar.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Threading.ThreadPool.wasm.gz
@@ -1263,6 +1268,7 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Data.DataSetExtensions.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.IO.FileSystem.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.IO.FileSystem.DriveInfo.wasm.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\blazor.boot.json.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Xml.Serialization.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Runtime.Serialization.Formatters.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Windows.wasm.gz
@@ -1428,12 +1434,14 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Runtime.Serialization.Json.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Runtime.InteropServices.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Diagnostics.StackTrace.wasm.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.pdb.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.native.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\dotnet.runtime.js.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Web.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Xml.XPath.XDocument.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Data.Common.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Dynamic.Runtime.wasm.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Globalization.Calendars.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.Extensions.FileSystemGlobbing.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Net.Mail.wasm.gz
@@ -1441,18 +1449,13 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Xml.Linq.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Net.Http.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\System.Drawing.Primitives.wasm.gz
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\blazor.boot.json
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.pdb
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.wasm
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\blazor.boot.json.gz
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.pdb.gz
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\wwwroot\_framework\ProiectCE.Client.wasm.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\ProiectCE.Client.staticwebassets.runtime.json
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\ProiectCE.Client.staticwebassets.endpoints.json
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\ProiectCE.Client.dll
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\ProiectCE.Client.pdb
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\Microsoft.AspNetCore.Authorization.dll
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\Microsoft.AspNetCore.Components.dll
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Authorization.dll
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Forms.dll
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\Microsoft.AspNetCore.Components.Web.dll
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\bin\Debug\net8.0\Microsoft.AspNetCore.Components.WebAssembly.dll
@@ -1661,6 +1664,7 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\ProiectCE.Client.sourcelink.json
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Authorization.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.wasm
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.Authorization.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.Forms.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.Web.wasm
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.WebAssembly.wasm
@@ -1860,6 +1864,7 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\3ijehfu7oa-mv535bwyet.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\uxu36e5yjv-a1a564i1z5.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\9w25i9hj1n-3sr6cqqjee.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\0vr1m6k7d3-kvcvutmuvo.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\5p4o0qnqip-p956m9cwdv.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\lvooh7etq4-y92l3ziktn.gz
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\0bj7otarum-9v0wgk68ii.gz
@@ -2074,6 +2079,6 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\refint\ProiectCE.Client.dll
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\ProiectCE.Client.pdb
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\ref\ProiectCE.Client.dll
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\y9m72m4hmu-gh7inghjkg.gz
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\wzwq2v4f95-5gy3n5r5q6.gz
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\46l4i9l6m2-uuhh9addc5.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\y9m72m4hmu-1u7iz5sksg.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\wzwq2v4f95-brasmdxcc7.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\46l4i9l6m2-1wp11sxfbw.gz

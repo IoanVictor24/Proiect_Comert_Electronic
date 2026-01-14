@@ -1,0 +1,103 @@
+﻿@page "/product/add"
+@page "/product/edit/{Id:int}"
+@using ProiectCE.Client.Models
+@inject HttpClient Http
+@inject NavigationManager NavManager
+
+<div class="container mt-4">
+    <h3>@(Id == 0 ? "Adaugă Produs Nou" : "Editează Produs")</h3>
+
+    <div class="card p-4 shadow-sm col-md-8">
+        <div class="mb-3">
+            <label>Nume Produs</label>
+            <input @bind="product.Name" class="form-control" />
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Preț (RON)</label>
+                <input @bind="product.Price" type="number" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Stoc</label>
+                <input @bind="product.Stock" type="number" class="form-control" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label>Categorie</label>
+            <select @bind="product.CategoryId" class="form-select">
+                <option value="0">Selectează o categorie...</option>
+                @if (categories != null)
+                {
+                    @foreach (var cat in categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Furnizor</label>
+            <input @bind="product.Supplier" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Descriere</label>
+            <textarea @bind="product.Description" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <label>Specificații</label>
+            <input @bind="product.Specifications" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Metoda Livrare</label>
+            <input @bind="product.DeliveryMethod" class="form-control" />
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-success" @onclick="HandleSave">Salvează</button>
+            <a href="products" class="btn btn-secondary">Anulează</a>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Product product = new Product();
+    private Category[]? categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Încărcăm categoriile pentru dropdown
+        categories = await Http.GetFromJsonAsync<Category[]>("https://localhost:7051/api/Categories");
+
+        if (Id != 0) // Mod Editare
+        {
+            product = await Http.GetFromJsonAsync<Product>($"https://localhost:7051/api/Products/{Id}");
+        }
+    }
+
+    private async Task HandleSave()
+    {
+        HttpResponseMessage response;
+
+        // Asigură-te că setăm CategoryId corect (evităm eroarea de constraint)
+        product.Category = null;
+
+        if (Id == 0) // Adăugare (POST)
+        {
+            response = await Http.PostAsJsonAsync("https://localhost:7051/api/Products", product);
+        }
+        else // Editare (PUT)
+        {
+            response = await Http.PutAsJsonAsync($"https://localhost:7051/api/Products/{Id}", product);
+        }
+
+        if (response.IsSuccessStatusCode)
+        {
+            NavManager.NavigateTo("/products");
+        }
+        else
+        {
+            Console.WriteLine("Eroare la salvare: " + await response.Content.ReadAsStringAsync());
+        }
+    }
+}

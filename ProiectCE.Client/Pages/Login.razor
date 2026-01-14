@@ -1,0 +1,67 @@
+﻿@page "/login"
+@inject HttpClient Http
+@inject NavigationManager NavManager
+@inject IJSRuntime JS
+
+<div class="container col-md-5 mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h3>Autentificare</h3>
+        </div>
+        <div class="card-body">
+            @if (errorMessage != null)
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+
+            <div class="mb-3">
+                <label>Username</label>
+                <input @bind="loginModel.Username" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label>Parolă</label>
+                <input @bind="loginModel.Password" type="password" class="form-control" />
+            </div>
+
+            <button class="btn btn-success w-100" @onclick="HandleLogin">Intră în cont</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginDto loginModel = new LoginDto();
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        var response = await Http.PostAsJsonAsync("https://localhost:7051/api/Auth/login", loginModel);
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Citim răspunsul care conține Token-ul
+            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+            // Salvăm Token-ul în browser (LocalStorage) ca să nu îl pierdem la refresh
+            await JS.InvokeVoidAsync("localStorage.setItem", "authToken", result?.Token);
+
+            // Mergem la produse
+            NavManager.NavigateTo("/products");
+        }
+        else
+        {
+            errorMessage = "Username sau parolă incorectă!";
+        }
+    }
+
+    public class LoginDto
+    {
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
+    public class LoginResponse
+    {
+        public string Token { get; set; } = "";
+    }
+}

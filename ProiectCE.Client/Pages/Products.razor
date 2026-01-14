@@ -1,33 +1,37 @@
 ﻿@page "/products"
 @using ProiectCE.Client.Models
+@using Microsoft.AspNetCore.Authorization
 @inject HttpClient Http
+@inject NavigationManager NavManager
+@inject IJSRuntime JS
 
 <PageTitle>Catalog Produse</PageTitle>
 
 <div class="container mt-4">
-    <h1 class="mb-4">Catalog Produse</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Catalog Produse</h1>
+        
+        <AuthorizeView Roles="admin">
+            <Authorized>
+                <a href="product/add" class="btn btn-success">
+                    <span class="bi bi-plus-circle"></span> Adaugă Produs
+                </a>
+            </Authorized>
+        </AuthorizeView>
+    </div>
 
     <div class="row mb-4">
         <div class="col-md-8">
             <div class="input-group">
-                <input @bind="searchText" class="form-control" placeholder="Caută produs..." @bind:event="oninput" @onkeyup="HandleSearch" />
+                <input @bind="searchText" class="form-control" placeholder="Caută produs..." @onkeyup="HandleSearch" />
                 <button class="btn btn-primary" @onclick="SearchProducts">Caută</button>
             </div>
         </div>
     </div>
 
-    @if (isLoading)
+    @if (products == null)
     {
-        <div class="text-center mt-5">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2">Se încarcă produsele din baza de date...</p>
-        </div>
-    }
-    else if (products == null || products.Length == 0)
-    {
-        <div class="alert alert-warning">
-            Nu s-au găsit produse în baza de date.
-        </div>
+        <p>Se încarcă...</p>
     }
     else
     {
@@ -36,23 +40,26 @@
             {
                 <div class="col">
                     <div class="card h-100 shadow-sm">
-                        <div class="card-header bg-transparent border-0 pt-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <span class="badge bg-info text-dark">
-                                    @(product.Category != null ? product.Category.Name : "Fără Categorie")
-                                </span>
-                                <h5 class="card-title mb-0 ms-2">@product.Name</h5>
-                            </div>
-                        </div>
-
                         <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <span class="badge bg-info text-dark mb-2">@product.Category?.Name</span>
                             <h4 class="text-primary">@product.Price RON</h4>
                             <p class="card-text text-muted small">@product.Description</p>
-                            <div class="mt-3">
-                                <small class="d-block text-muted"><strong>Furnizor:</strong> @product.Supplier</small>
-                                <small class="d-block text-muted"><strong>Stoc:</strong> @product.Stock buc.</small>
-                            </div>
                         </div>
+                        
+                        <AuthorizeView Roles="admin">
+                            <Authorized>
+                                <div class="card-footer bg-white border-top-0 d-flex gap-2">
+                                    <a href="product/edit/@product.Id" class="btn btn-warning btn-sm flex-fill">Editează</a>
+                                    <button class="btn btn-danger btn-sm flex-fill" @onclick="() => DeleteProduct(product.Id)">Șterge</button>
+                                </div>
+                            </Authorized>
+                            <NotAuthorized>
+                                <div class="card-footer bg-white border-top-0">
+                                    <a href="product/details/@product.Id" class="btn btn-outline-primary w-100">Detalii</a>
+                                </div>
+                            </NotAuthorized>
+                        </AuthorizeView>
                     </div>
                 </div>
             }
@@ -63,7 +70,6 @@
 @code {
     private Product[]? products;
     private string searchText = "";
-    private bool isLoading = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -72,44 +78,34 @@
 
     private async Task LoadProducts()
     {
-        isLoading = true;
-        try
-        {
-            // ATENȚIE: Verifică dacă 7051 este portul corect al Backend-ului tău!
-            // Dacă Swagger se deschide pe alt port, schimbă aici.
-            products = await Http.GetFromJsonAsync<Product[]>("https://localhost:7051/api/Products");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Eroare la conectarea cu API: {ex.Message}");
-        }
-        finally
-        {
-            isLoading = false;
-        }
+        // ATENȚIE: Verifică portul backend-ului!
+        products = await Http.GetFromJsonAsync<Product[]>("https://localhost:7051/api/Products");
     }
 
     private async Task SearchProducts()
     {
-        if (string.IsNullOrWhiteSpace(searchText))
-        {
-            await LoadProducts();
-        }
-        else
-        {
-            try
-            {
-                products = await Http.GetFromJsonAsync<Product[]>($"https://localhost:7051/api/Products/search/{searchText}");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Eroare la căutare: {ex.Message}");
-            }
-        }
+        if (string.IsNullOrWhiteSpace(searchText)) await LoadProducts();
+        else products = await Http.GetFromJsonAsync<Product[]>($"https://localhost:7051/api/Products/search?q={searchText}");
     }
 
-    private async Task HandleSearch(KeyboardEventArgs e)
+    private async Task HandleSearch(KeyboardEventArgs e) { if (e.Key == "Enter") await SearchProducts(); }
+
+    // FUNCȚIA DE ȘTERGERE
+    private async Task DeleteProduct(int id)
     {
-        if (e.Key == "Enter") await SearchProducts();
+        bool confirmed = await JS.InvokeAsync<bool>("confirm", "Sigur vrei să ștergi acest produs?");
+        if (confirmed)
+        {
+            // Token-ul este adăugat automat de AuthStateProvider
+            var response = await Http.DeleteAsync($"https://localhost:7051/api/Products/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadProducts(); // Reîmprospătăm lista
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", "Eroare la ștergere!");
+            }
+        }
     }
 }
