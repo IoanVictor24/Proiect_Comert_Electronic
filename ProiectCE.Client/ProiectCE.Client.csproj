@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-    <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
-=======
-﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
->>>>>>> Stashed changes
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
