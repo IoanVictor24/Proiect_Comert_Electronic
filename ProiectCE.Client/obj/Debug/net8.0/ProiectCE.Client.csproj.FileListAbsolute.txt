@@ -2074,6 +2074,6 @@ C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Clie
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\refint\ProiectCE.Client.dll
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\ProiectCE.Client.pdb
 C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\ref\ProiectCE.Client.dll
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\y9m72m4hmu-gh7inghjkg.gz
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\wzwq2v4f95-5gy3n5r5q6.gz
-C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\46l4i9l6m2-uuhh9addc5.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\y9m72m4hmu-tw5hw6tt2t.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\wzwq2v4f95-aqjx0k3pqq.gz
+C:\Users\Administrator\Documents\GitHub\Proiect_Comert_Electronic\ProiectCE.Client\obj\Debug\net8.0\compressed\46l4i9l6m2-a693kn5rzz.gz
