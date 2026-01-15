@@ -2,127 +2,255 @@
 @using ProiectCE.Client.Models
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient Http
-
 @inject NavigationManager NavManager
 @inject IJSRuntime JS
-
 @inject ProiectCE.Client.Services.CartService CartService
->>>>>>> Stashed changes
+
 <PageTitle>Catalog Produse</PageTitle>
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Catalog Produse</h1>
-        
-        <AuthorizeView Roles="admin">
-            <Authorized>
-                <a href="product/add" class="btn btn-success">
-                    <span class="bi bi-plus-circle"></span> Adaugă Produs
-                </a>
-            </Authorized>
-        </AuthorizeView>
-    </div>
+        <h1 class="mb-0">Catalog Produse</h1>
 
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <div class="input-group">
-                <input @bind="searchText" class="form-control" placeholder="Caută produs..." @onkeyup="HandleSearch" />
-                <button class="btn btn-primary" @onclick="SearchProducts">Caută</button>
-            </div>
+        <div class="d-flex gap-2">
+            <AuthorizeView Roles="admin">
+                <Authorized>
+                    <a href="product/add" class="btn btn-success shadow-sm">
+                        <span class="bi bi-plus-circle"></span> Adaugă
+                    </a>
+                </Authorized>
+            </AuthorizeView>
+
+            <button class="btn btn-primary shadow-sm" @onclick="ToggleFilters">
+                <i class="bi bi-funnel-fill"></i> Filtre
+                <i class="bi @(showFilters ? "bi-chevron-up" : "bi-chevron-down") ms-1"></i>
+            </button>
         </div>
     </div>
 
-    @if (products == null)
-    {
-        <p>Se încarcă...</p>
-    }
-    else
-    {
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            @foreach (var product in products)
+    <div class="row">
+        <div class="@(showFilters ? "col-md-9" : "col-md-12") transition-all">
+
+            @if (products == null)
             {
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">@product.Name</h5>
-                            <span class="badge bg-info text-dark mb-2">@product.Category?.Name</span>
-                            <h4 class="text-primary">@product.Price RON</h4>
-                            <p class="card-text text-muted small">@product.Description</p>
-
-                            <div class="mt-3">
-                                <small class="d-block text-muted"><strong>Furnizor:</strong> @product.Supplier</small>
-                                <small class="d-block text-muted"><strong>Stoc:</strong> @product.Stock buc.</small>
-                                <button class="btn btn-success w-100 mt-2" @onclick="() => AddToCart(product)">
-                                    🛒 Adaugă în coș
-                                </button>
-                            </div>
-
-                        </div>
-                        
-                        <AuthorizeView Roles="admin">
-                            <Authorized>
-                                <div class="card-footer bg-white border-top-0 d-flex gap-2">
-                                    <a href="product/edit/@product.Id" class="btn btn-warning btn-sm flex-fill">Editează</a>
-                                    <button class="btn btn-danger btn-sm flex-fill" @onclick="() => DeleteProduct(product.Id)">Șterge</button>
-                                </div>
-                            </Authorized>
-                            <NotAuthorized>
-                                <div class="card-footer bg-white border-top-0">
-                                    <a href="product/details/@product.Id" class="btn btn-outline-primary w-100">Detalii</a>
-                                </div>
-                            </NotAuthorized>
-                        </AuthorizeView>
+                <div class="text-center mt-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Se încarcă...</span>
                     </div>
+                    <p class="mt-2">Se încarcă produsele...</p>
+                </div>
+            }
+            else if (products.Length == 0)
+            {
+                <div class="alert alert-warning text-center">
+                    Nu s-au găsit produse conform filtrelor selectate.
+                </div>
+            }
+            else
+            {
+                <div class="row row-cols-1 @(showFilters ? "row-cols-md-3" : "row-cols-md-4") g-4">
+                    @foreach (var product in products)
+                    {
+                        <div class="col">
+                            <div class="card h-100 shadow-sm border-0 hover-effect">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h5 class="card-title text-truncate" title="@product.Name">@product.Name</h5>
+                                        <span class="badge bg-light text-dark border">
+                                            @(product.Category != null ? product.Category.Name : "General")
+                                        </span>
+                                    </div>
+
+                                    <h4 class="text-primary mb-3">@product.Price RON</h4>
+
+                                    <p class="card-text text-muted small flex-grow-1 text-truncate" style="max-height: 50px;">
+                                        @product.Description
+                                    </p>
+
+                                    <div class="mt-auto pt-3 border-top">
+                                        <div class="d-flex justify-content-between small mb-1">
+                                            <span class="text-muted">Furnizor:</span>
+                                            <span class="fw-semibold">@product.Supplier</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between small mb-2">
+                                            <span class="text-muted">Stoc:</span>
+                                            @if (product.Stock > 0)
+                                            {
+                                                <span class="text-success fw-bold">@product.Stock buc.</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger fw-bold">Epuizat</span>
+                                            }
+                                        </div>
+
+                                        <button class="btn btn-outline-success w-100" @onclick="() => AddToCart(product)" disabled="@(product.Stock <= 0)">
+                                            @(product.Stock > 0 ? "🛒 În coș" : "Indisponibil")
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer bg-transparent border-top-0 pt-0 pb-3 px-3">
+                                    <AuthorizeView Roles="admin">
+                                        <Authorized>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <a href="product/edit/@product.Id" class="btn btn-warning btn-sm flex-fill">Edit</a>
+                                                <button class="btn btn-danger btn-sm flex-fill" @onclick="() => DeleteProduct(product.Id)">Șterge</button>
+                                            </div>
+                                        </Authorized>
+                                        <NotAuthorized>
+                                            <a href="product/details/@product.Id" class="btn btn-light w-100 btn-sm mt-2">Detalii</a>
+                                        </NotAuthorized>
+                                    </AuthorizeView>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
         </div>
-    }
+
+        @if (showFilters)
+        {
+            <div class="col-md-3">
+                <div class="card shadow border-0 bg-light">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-funnel"></i> Filtre</h5>
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close" @onclick="ToggleFilters"></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Căutare</label>
+                            <input @bind="searchText" class="form-control" placeholder="Model, descriere..." />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Interval Preț</label>
+                            <div class="d-flex gap-2 align-items-center">
+                                <input type="number" @bind="minPrice" class="form-control" placeholder="Min">
+                                <span class="text-muted">-</span>
+                                <input type="number" @bind="maxPrice" class="form-control" placeholder="Max">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Furnizor</label>
+                            <input type="text" @bind="supplierFilter" class="form-control" placeholder="Ex: Samsung">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-uppercase text-muted">Livrare</label>
+                            <input type="text" @bind="deliveryFilter" class="form-control" placeholder="Ex: Curier">
+                        </div>
+
+                        <div class="mb-4 form-check form-switch">
+                            <input type="checkbox" class="form-check-input" id="checkStoc" @bind="onlyInStock">
+                            <label class="form-check-label" for="checkStoc">Doar în stoc</label>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" @onclick="ApplyFilters">Aplică Filtrele</button>
+                            <button class="btn btn-outline-secondary btn-sm" @onclick="ResetFilters">Șterge tot</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
+
+<style>
+    /* Mic efect de hover pentru carduri */
+    .hover-effect {
+        transition: transform 0.2s;
+    }
+
+        .hover-effect:hover {
+            transform: translateY(-5px);
+        }
+</style>
 
 @code {
     private Product[]? products;
+
+    // Variabilă pentru afișarea/ascunderea filtrelor
+    private bool showFilters = false;
+
+    // Variabile pentru filtre
     private string searchText = "";
+    private decimal? minPrice;
+    private decimal? maxPrice;
+    private string supplierFilter = "";
+    private string deliveryFilter = "";
+    private bool onlyInStock = false;
 
     protected override async Task OnInitializedAsync()
     {
         await LoadProducts();
     }
 
-    private async Task LoadProducts()
+    // Funcția care comută vizibilitatea filtrelor
+    private void ToggleFilters()
     {
-        // ATENȚIE: Verifică portul backend-ului!
-        products = await Http.GetFromJsonAsync<Product[]>("https://localhost:7051/api/Products");
+        showFilters = !showFilters;
     }
 
-    private async Task SearchProducts()
+    private async Task LoadProducts()
     {
-        if (string.IsNullOrWhiteSpace(searchText)) await LoadProducts();
-        else products = await Http.GetFromJsonAsync<Product[]>($"https://localhost:7051/api/Products/search?q={searchText}");
+        try
+        {
+            products = await Http.GetFromJsonAsync<Product[]>("https://localhost:7051/api/Products");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Eroare: {ex.Message}");
+        }
     }
+
+    private async Task ApplyFilters()
+    {
+        var url = "https://localhost:7051/api/Products/filter?";
+        var parameters = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(searchText)) parameters.Add($"model={searchText}");
+        if (minPrice.HasValue) parameters.Add($"minPrice={minPrice}");
+        if (maxPrice.HasValue) parameters.Add($"maxPrice={maxPrice}");
+        if (!string.IsNullOrWhiteSpace(supplierFilter)) parameters.Add($"supplier={supplierFilter}");
+        if (!string.IsNullOrWhiteSpace(deliveryFilter)) parameters.Add($"deliveryMethod={deliveryFilter}");
+        if (onlyInStock) parameters.Add("inStock=true");
+
+        var finalQuery = string.Join("&", parameters);
+        products = await Http.GetFromJsonAsync<Product[]>(url + finalQuery);
+    }
+
+    private async Task ResetFilters()
+    {
+        searchText = "";
+        minPrice = null;
+        maxPrice = null;
+        supplierFilter = "";
+        deliveryFilter = "";
+        onlyInStock = false;
+
+        await LoadProducts();
+    }
+
     private void AddToCart(Product p)
     {
         CartService.AddProductToCart(p);
-        // Putem pune un mesaj în consolă să vedem că merge
-        Console.WriteLine($"Produs adăugat: {p.Name}. Total coș: {CartService.GetTotal()} RON");
     }
 
-    private async Task HandleSearch(KeyboardEventArgs e) { if (e.Key == "Enter") await SearchProducts(); }
-
-    // FUNCȚIA DE ȘTERGERE
     private async Task DeleteProduct(int id)
     {
         bool confirmed = await JS.InvokeAsync<bool>("confirm", "Sigur vrei să ștergi acest produs?");
         if (confirmed)
         {
-            // Token-ul este adăugat automat de AuthStateProvider
             var response = await Http.DeleteAsync($"https://localhost:7051/api/Products/{id}");
             if (response.IsSuccessStatusCode)
             {
-                await LoadProducts(); // Reîmprospătăm lista
-            }
-            else
-            {
-                await JS.InvokeVoidAsync("alert", "Eroare la ștergere!");
+                await ApplyFilters();
             }
         }
     }
