@@ -79,6 +79,69 @@ namespace ProiectCE.Controllers
         }
 
         // -------------------------------------------------
+        // 3.5. GET: Filtrare Avansată - FILTER
+        // Ruta: GET /api/Products/filter?minPrice=100&maxPrice=500&supplier=Samsung
+        // -------------------------------------------------
+        [HttpGet("filter")]
+        public async Task<ActionResult<IEnumerable<Product>>> FilterProducts(
+            [FromQuery] decimal? minPrice,
+            [FromQuery] decimal? maxPrice,
+            [FromQuery] bool? inStock,
+            [FromQuery] string? model,
+            [FromQuery] string? supplier,
+            [FromQuery] string? deliveryMethod)
+        {
+            // Pornim cu toate produsele
+            var query = GetProductsWithCategory().AsQueryable();
+
+            // 1. Filtru Preț Minim
+            if (minPrice.HasValue)
+            {
+                query = query.Where(p => p.Price >= minPrice.Value);
+            }
+
+            // 2. Filtru Preț Maxim
+            if (maxPrice.HasValue)
+            {
+                query = query.Where(p => p.Price <= maxPrice.Value);
+            }
+
+            // 3. Filtru Stoc (dacă inStock e true, căutăm produse cu stoc > 0)
+            if (inStock.HasValue)
+            {
+                if (inStock.Value)
+                {
+                    query = query.Where(p => p.Stock > 0);
+                }
+                else
+                {
+                    // Dacă utilizatorul vrea produse epuizate
+                    query = query.Where(p => p.Stock == 0);
+                }
+            }
+
+            // 4. Filtru Model (căutare în Nume)
+            if (!string.IsNullOrWhiteSpace(model))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(model.ToLower()));
+            }
+
+            // 5. Filtru Furnizor
+            if (!string.IsNullOrWhiteSpace(supplier))
+            {
+                query = query.Where(p => p.Supplier.ToLower().Contains(supplier.ToLower()));
+            }
+
+            // 6. Filtru Metodă Livrare
+            if (!string.IsNullOrWhiteSpace(deliveryMethod))
+            {
+                query = query.Where(p => p.DeliveryMethod.ToLower().Contains(deliveryMethod.ToLower()));
+            }
+
+            return await query.ToListAsync();
+        }
+
+        // -------------------------------------------------
         // 4. POST: Adăugare Produs Nou - CREATE
         // Ruta: POST /api/Products
         // -------------------------------------------------
