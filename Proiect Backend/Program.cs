@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // 1. Configurarea Bazei de Date (DbContext)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 // 2. Adaugă serviciul pentru Controller-e (inclusiv AuthController-ul nostru)
