@@ -1,13 +1,15 @@
 ﻿@page "/cart"
 @using ProiectCE.Client.Services
+@using ProiectCE.Client.Models
 @inject CartService CartService
+@implements IDisposable
 
 <div class="container mt-4">
     <h3>🛒 Coșul meu de cumpărături</h3>
 
-    @if (!CartService.SelectedItems.Any())
+    @if (!CartService.CartItems.Any())
     {
-        <p>Coșul este gol. Mergi la <a href="/products">produse</a> pentru a alege ceva.</p>
+        <p>Coșul este gol. Mergi la <a href="products">produse</a> pentru a alege ceva.</p>
     }
     else
     {
@@ -15,19 +17,25 @@
             <thead class="table-dark">
                 <tr>
                     <th>Produs</th>
-                    <th>Preț Unitat</th>
+                    <th>Preț Unitar</th>
                     <th>Cantitate</th>
                     <th>Subtotal</th>
+                    <th>Acțiuni</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in CartService.SelectedItems)
+                @foreach (var item in CartService.CartItems)
                 {
                     <tr>
                         <td>@item.Product.Name</td>
                         <td>@item.Product.Price RON</td>
                         <td>@item.Quantity</td>
                         <td>@(item.Product.Price * item.Quantity) RON</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" @onclick="() => Sterge(item)">
+                                <i class="bi bi-trash"></i> Șterge
+                            </button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -41,3 +49,22 @@
         </div>
     }
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Ne abonăm la evenimentul OnChange pentru a actualiza pagina când ștergem ceva
+        CartService.OnChange += StateHasChanged;
+    }
+
+    private void Sterge(CartItem item)
+    {
+        CartService.StergeProdus(item);
+    }
+
+    public void Dispose()
+    {
+        // Ne dezabonăm când părăsim pagina pentru a evita erori de memorie
+        CartService.OnChange -= StateHasChanged;
+    }
+}
