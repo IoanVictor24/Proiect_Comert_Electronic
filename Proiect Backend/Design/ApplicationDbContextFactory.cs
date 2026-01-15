@@ -19,7 +19,7 @@ namespace ProiectCE.Design
 
             // 2. Crearea opțiunilor DbContext
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlite(connectionString);
+            builder.UseSqlServer(connectionString);
 
             // 3. Returnează o instanță a DbContext-ului
             return new ApplicationDbContext(builder.Options);
