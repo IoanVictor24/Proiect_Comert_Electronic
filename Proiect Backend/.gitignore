@@ -1,4 +1,4 @@
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudio,aspnetcore,dotnetcore,csharp
+﻿# Created by https://www.toptal.com/developers/gitignore/api/visualstudio,aspnetcore,dotnetcore,csharp
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,aspnetcore,dotnetcore,csharp
 
 ### ASPNETCore ###
@@ -714,3 +714,9 @@ obj/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,aspnetcore,dotnetcore,csharp
+
+
+*.db-shm
+*.db-wal
+
+*.db
