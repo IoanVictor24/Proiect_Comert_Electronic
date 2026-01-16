@@ -1,0 +1,38 @@
+﻿@page "/order-result/{Status}"
+@inject NavigationManager NavManager
+
+<div class="container mt-5 text-center">
+    <div class="card shadow-sm p-5 border-0">
+        @if (Status?.ToLower() == "success")
+        {
+            <div class="mb-4">
+                <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="text-success fw-bold">Comandă Efectuată cu Succes!</h2>
+            <p class="lead mt-3 text-muted">Vă mulțumim pentru achiziție! Veți primi un e-mail cu detaliile livrării în curând.</p>
+            <div class="mt-4">
+                <button class="btn btn-primary btn-lg px-5" @onclick='() => NavManager.NavigateTo("/products")'>
+                    Înapoi la Produse
+                </button>
+            </div>
+        }
+        else
+        {
+            <div class="mb-4">
+                <i class="bi bi-x-circle-fill text-danger" style="font-size: 5rem;"></i>
+            </div>
+            <h2 class="text-danger fw-bold">Comanda a Eșuat</h2>
+            <p class="lead mt-3 text-muted">Ne pare rău, dar a apărut o problemă la procesarea comenzii tale. Te rugăm să verifici datele cardului și să încerci din nou.</p>
+            <div class="mt-4">
+                <button class="btn btn-outline-secondary btn-lg px-5" @onclick='() => NavManager.NavigateTo("/cart")'>
+                    Înapoi la Coș
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Status { get; set; }
+}
