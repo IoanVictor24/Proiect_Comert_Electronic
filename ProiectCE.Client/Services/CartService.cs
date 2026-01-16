@@ -7,13 +7,13 @@ namespace ProiectCE.Client.Services
 {
     public class CartService
     {
-        // Evenimentul care anunță componentele când se modifică coșul
-        public event Action OnChange;
-
-        // Am redenumit SelectedItems în CartItems pentru a fi compatibil cu pagina Razor
+        public event Action? OnChange;
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
-        // Metodă pentru a adăuga un produs
+        // Logica pentru coduri bonus
+        public string AppliedBonusCode { get; private set; } = "";
+        public decimal DiscountPercentage { get; private set; } = 0;
+
         public void AddProductToCart(Product product)
         {
             var item = CartItems.FirstOrDefault(x => x.Product.Id == product.Id);
@@ -25,24 +25,51 @@ namespace ProiectCE.Client.Services
             {
                 item.Quantity++;
             }
-
-            // Anunțăm că s-a modificat ceva
             OnChange?.Invoke();
         }
 
-        // Metodă nouă pentru ȘTERGERE (pentru butonul cerut)
         public void StergeProdus(CartItem itemDeSters)
         {
             var item = CartItems.FirstOrDefault(p => p.Product.Id == itemDeSters.Product.Id);
             if (item != null)
             {
                 CartItems.Remove(item);
-                // Anunțăm că s-a modificat ceva
                 OnChange?.Invoke();
             }
         }
 
-        // Calculează prețul total
-        public decimal GetTotal() => CartItems.Sum(x => x.Product.Price * x.Quantity);
+        public decimal GetSubTotal() => CartItems.Sum(x => x.Product.Price * x.Quantity);
+
+        // Aplicare cod bonus (Exemplu: REDUCERE10 oferă 10% reducere)
+        public bool ApplyBonusCode(string code)
+        {
+            if (code.ToUpper() == "REDUCERE10")
+            {
+                AppliedBonusCode = code.ToUpper();
+                DiscountPercentage = 10;
+                OnChange?.Invoke();
+                return true;
+            }
+            return false;
+        }
+
+        public decimal GetDiscount() => GetSubTotal() * (DiscountPercentage / 100);
+
+        public decimal GetDeliveryCost()
+        {
+            var subTotal = GetSubTotal();
+            if (subTotal == 0 || subTotal >= 500) return 0; // Gratuit peste 500 RON
+            return 20; // Cost fix livrare
+        }
+
+        public decimal GetTotal() => GetSubTotal() + GetDeliveryCost() - GetDiscount();
+
+        public void ClearCart()
+        {
+            CartItems.Clear();
+            AppliedBonusCode = "";
+            DiscountPercentage = 0;
+            OnChange?.Invoke();
+        }
     }
 }

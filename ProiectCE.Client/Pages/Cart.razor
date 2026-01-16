@@ -2,6 +2,7 @@
 @using ProiectCE.Client.Services
 @using ProiectCE.Client.Models
 @inject CartService CartService
+@inject NavigationManager NavManager
 @implements IDisposable
 
 <div class="container mt-4">
@@ -42,9 +43,15 @@
         </table>
 
         <div class="d-flex justify-content-end mt-4">
-            <div class="card p-3 shadow-sm">
+            <div class="card p-3 shadow-sm border-primary">
+                <div class="mb-2">Subtotal: @CartService.GetSubTotal() RON</div>
+                <div class="mb-2 text-success">Livrare: @(CartService.GetDeliveryCost() == 0 ? "Gratuit" : CartService.GetDeliveryCost() + " RON")</div>
                 <h4>Total de plată: <span class="text-primary">@CartService.GetTotal() RON</span></h4>
-                <button class="btn btn-primary btn-lg mt-2">Finalizează Comanda</button>
+
+                @* Adăugăm acțiunea de navigare aici *@
+                <button class="btn btn-primary btn-lg mt-2" @onclick='() => NavManager.NavigateTo("/checkout")'>
+                    Continuă spre Finalizare <i class="bi bi-arrow-right"></i>
+                </button>
             </div>
         </div>
     }
@@ -53,7 +60,6 @@
 @code {
     protected override void OnInitialized()
     {
-        // Ne abonăm la evenimentul OnChange pentru a actualiza pagina când ștergem ceva
         CartService.OnChange += StateHasChanged;
     }
 
@@ -64,7 +70,6 @@
 
     public void Dispose()
     {
-        // Ne dezabonăm când părăsim pagina pentru a evita erori de memorie
         CartService.OnChange -= StateHasChanged;
     }
 }
