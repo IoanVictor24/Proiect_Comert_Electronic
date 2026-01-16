@@ -1,0 +1,82 @@
+﻿@page "/order-history"
+@inject IJSRuntime JS
+@using System.Text.Json
+
+<div class="container mt-4">
+    <h3 class="mb-4">📜 Istoricul Comenzilor Mele (Local)</h3>
+
+    @if (orders == null)
+    {
+        <p><em>Se încarcă istoricul...</em></p>
+    }
+    else if (!orders.Any())
+    {
+        <div class="alert alert-info">Nu ai nicio comandă salvată în acest browser.</div>
+    }
+    else
+    {
+        @foreach (var order in orders.AsEnumerable().Reverse()) // Cele mai noi primele
+        {
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between">
+                    <span><strong>Comanda #@order.GetProperty("Id").GetString()</strong></span>
+                    <span class="text-muted">@order.GetProperty("Date").GetDateTime().ToString("dd/MM/yyyy HH:mm")</span>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">Client: <strong>@order.GetProperty("CustomerName").GetString()</strong></p>
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var item in order.GetProperty("Items").EnumerateArray())
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center py-1">
+                                @item.GetProperty("Name").GetString() (x@item.GetProperty("Quantity").GetInt32())
+                                <span>@(item.GetProperty("Price").GetDecimal() * item.GetProperty("Quantity").GetInt32()) RON</span>
+                            </li>
+                        }
+                    </ul>
+                    <div class="text-end">
+                        <h5 class="text-primary">Total: @order.GetProperty("Total").GetDecimal() RON</h5>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <button class="btn btn-outline-danger btn-sm mt-3" @onclick="ClearHistory">
+            <i class="bi bi-trash"></i> Șterge tot istoricul local
+        </button>
+    }
+</div>
+
+@code {
+    private List<JsonElement>? orders;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadHistory();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadHistory()
+    {
+        var json = await JS.InvokeAsync<string>("localStorage.getItem", "orderHistory");
+        if (!string.IsNullOrEmpty(json))
+        {
+            orders = JsonSerializer.Deserialize<List<JsonElement>>(json);
+        }
+        else
+        {
+            orders = new List<JsonElement>();
+        }
+    }
+
+    private async Task ClearHistory()
+    {
+        if (await JS.InvokeAsync<bool>("confirm", "Sigur vrei să ștergi istoricul din acest browser?"))
+        {
+            await JS.InvokeVoidAsync("localStorage.removeItem", "orderHistory");
+            await LoadHistory();
+        }
+    }
+}

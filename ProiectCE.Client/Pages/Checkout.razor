@@ -1,5 +1,6 @@
 ﻿@page "/checkout"
 @using ProiectCE.Client.Services
+@using System.Text.Json
 @inject CartService CartService
 @inject NavigationManager NavManager
 @inject IJSRuntime JS
@@ -128,21 +129,44 @@
 
         try
         {
-            // Aici se simulează procesarea plății
-            bool isSuccess = true;
+            // --- LOGICA PENTRU SALVARE ÎN ISTORIC (LOCAL STORAGE) ---
 
-            if (isSuccess)
+            // 1. Creăm obiectul comenzii
+            var newOrder = new
             {
-                CartService.ClearCart();
-                NavManager.NavigateTo("/order-result/success");
-            }
-            else
+                Id = Guid.NewGuid().ToString().Substring(0, 8),
+                Date = DateTime.Now,
+                CustomerName = customerName,
+                Total = CartService.GetTotal(),
+                Items = CartService.CartItems.Select(i => new
+                {
+                    i.Product.Name,
+                    i.Quantity,
+                    i.Product.Price
+                }).ToList()
+            };
+
+            // 2. Citim istoricul existent din Local Storage
+            var existingHistoryJson = await JS.InvokeAsync<string>("localStorage.getItem", "orderHistory");
+            List<object> history = new();
+
+            if (!string.IsNullOrEmpty(existingHistoryJson))
             {
-                NavManager.NavigateTo("/order-result/failure");
+                history = JsonSerializer.Deserialize<List<object>>(existingHistoryJson) ?? new();
             }
+
+            // 3. Adăugăm noua comandă și salvăm înapoi
+            history.Add(newOrder);
+            await JS.InvokeVoidAsync("localStorage.setItem", "orderHistory", JsonSerializer.Serialize(history));
+
+            // --- FINALIZARE ---
+
+            CartService.ClearCart();
+            NavManager.NavigateTo("/order-result/success");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine("Eroare la salvarea comenzii: " + ex.Message);
             NavManager.NavigateTo("/order-result/failure");
         }
     }
