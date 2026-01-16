@@ -8,8 +8,11 @@ namespace ProiectCE.Client.Services
     public class CartService
     {
         public event Action? OnChange;
-
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
+
+        // Logica pentru coduri bonus
+        public string AppliedBonusCode { get; private set; } = "";
+        public decimal DiscountPercentage { get; private set; } = 0;
 
         public void AddProductToCart(Product product)
         {
@@ -35,24 +38,38 @@ namespace ProiectCE.Client.Services
             }
         }
 
-        // --- MODIFICĂRI PENTRU LIVRARE ---
-
-        // 1. Calculăm subtotalul (doar produsele)
         public decimal GetSubTotal() => CartItems.Sum(x => x.Product.Price * x.Quantity);
 
-        // 2. Calculăm costul de livrare (Exemplu: 20 RON, sau Gratuit dacă ai peste 500 RON în coș)
+        // Aplicare cod bonus (Exemplu: REDUCERE10 oferă 10% reducere)
+        public bool ApplyBonusCode(string code)
+        {
+            if (code.ToUpper() == "REDUCERE10")
+            {
+                AppliedBonusCode = code.ToUpper();
+                DiscountPercentage = 10;
+                OnChange?.Invoke();
+                return true;
+            }
+            return false;
+        }
+
+        public decimal GetDiscount() => GetSubTotal() * (DiscountPercentage / 100);
+
         public decimal GetDeliveryCost()
         {
             var subTotal = GetSubTotal();
-            if (subTotal == 0) return 0; // Dacă e gol coșul, 0 lei
-            if (subTotal >= 500) return 0; // Gratuit peste 500 RON
-            return 20; // Altfel 20 RON
+            if (subTotal == 0 || subTotal >= 500) return 0; // Gratuit peste 500 RON
+            return 20; // Cost fix livrare
         }
 
-        // 3. Totalul final (Produse + Livrare)
-        public decimal GetGrandTotal()
+        public decimal GetTotal() => GetSubTotal() + GetDeliveryCost() - GetDiscount();
+
+        public void ClearCart()
         {
-            return GetSubTotal() + GetDeliveryCost();
+            CartItems.Clear();
+            AppliedBonusCode = "";
+            DiscountPercentage = 0;
+            OnChange?.Invoke();
         }
     }
 }
