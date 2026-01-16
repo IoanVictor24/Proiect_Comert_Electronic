@@ -1,5 +1,6 @@
 ﻿@using ProiectCE.Client.Services
 @inject CartService CartService
+@inject WishlistService WishlistService
 @implements IDisposable
 
 <div class="top-row ps-3 navbar navbar-dark">
@@ -36,6 +37,12 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
+            <NavLink class="nav-link" href="wishlist">
+                <span class="bi bi-heart-fill" aria-hidden="true"></span> Wishlist (@WishlistService.Wishlist.Count)
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
             <NavLink class="nav-link" href="counter">
                 <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
             </NavLink>
@@ -65,14 +72,20 @@
 
     private void ToggleNavMenu() => collapseNavMenu = !collapseNavMenu;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        // Ne abonăm ca să se actualizeze numărul din paranteză automat
+        // Ne asigurăm că încărcăm datele din LocalStorage ca să avem numerele corecte
+        await WishlistService.GetWishlist();
+
+        // Ne abonăm la modificări
         CartService.OnChange += StateHasChanged;
+        WishlistService.OnChange += StateHasChanged;
     }
 
     public void Dispose()
     {
+        // Curățăm memoria
         CartService.OnChange -= StateHasChanged;
+        WishlistService.OnChange -= StateHasChanged;
     }
 }

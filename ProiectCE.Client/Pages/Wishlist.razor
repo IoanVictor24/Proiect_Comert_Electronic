@@ -1,0 +1,65 @@
+﻿@page "/wishlist"
+@using ProiectCE.Client.Services
+@using ProiectCE.Client.Models
+@inject WishlistService WishlistService
+@inject CartService CartService
+
+<div class="container mt-4">
+    <h3>❤️ Lista mea de dorințe</h3>
+
+    @if (WishlistService.Wishlist.Count == 0)
+    {
+        <div class="alert alert-info">
+            Nu ai niciun produs în wishlist. Mergi la <a href="products">produse</a>!
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in WishlistService.Wishlist)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text text-primary font-weight-bold">@product.Price RON</p>
+
+                            <button class="btn btn-success btn-sm" @onclick="() => MutaInCos(product)">
+                                <i class="bi bi-cart-plus"></i> Adaugă în Coș
+                            </button>
+
+                            <button class="btn btn-outline-danger btn-sm ms-2" @onclick="() => Sterge(product)">
+                                <i class="bi bi-trash"></i> Șterge
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Încărcăm lista din memoria browserului când intrăm pe pagină
+        await WishlistService.GetWishlist();
+        WishlistService.OnChange += StateHasChanged;
+    }
+
+    private async Task Sterge(Product product)
+    {
+        await WishlistService.RemoveFromWishlist(product);
+    }
+
+    private async Task MutaInCos(Product product)
+    {
+        CartService.AddProductToCart(product);
+        await WishlistService.RemoveFromWishlist(product);
+    }
+
+    public void Dispose()
+    {
+        WishlistService.OnChange -= StateHasChanged;
+    }
+}

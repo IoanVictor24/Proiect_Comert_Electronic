@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Web;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ProiectCE.Client;
 using Microsoft.AspNetCore.Components.Authorization; // <--- Asta trebuie să fie sus
@@ -16,5 +17,10 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 
 // Configurare Servicii (Cart)
 builder.Services.AddSingleton<ProiectCE.Client.Services.CartService>();
+
+
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<WishlistService>();
+
 
 await builder.Build().RunAsync();
