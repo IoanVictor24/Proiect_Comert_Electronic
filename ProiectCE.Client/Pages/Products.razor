@@ -1,10 +1,12 @@
 ﻿@page "/products"
 @using ProiectCE.Client.Models
+@using ProiectCE.Client.Services
 @using Microsoft.AspNetCore.Authorization
 @inject HttpClient Http
 @inject NavigationManager NavManager
 @inject IJSRuntime JS
-@inject ProiectCE.Client.Services.CartService CartService
+@inject CartService CartService
+@inject WishlistService WishlistService
 
 <PageTitle>Catalog Produse</PageTitle>
 
@@ -84,9 +86,16 @@
                                             }
                                         </div>
 
-                                        <button class="btn btn-outline-success w-100" @onclick="() => AddToCart(product)" disabled="@(product.Stock <= 0)">
-                                            @(product.Stock > 0 ? "🛒 În coș" : "Indisponibil")
-                                        </button>
+                                        <div class="d-flex gap-2">
+                                            <button class="btn btn-outline-success flex-grow-1" @onclick="() => AddToCart(product)" disabled="@(product.Stock <= 0)">
+                                                @(product.Stock > 0 ? "🛒 În coș" : "Indisponibil")
+                                            </button>
+
+                                            <button class="btn btn-outline-danger" @onclick="() => AddToWishlist(product)" title="Adaugă la favorite">
+                                                ❤️
+                                            </button>
+                                        </div>
+
                                     </div>
                                 </div>
 
@@ -123,7 +132,6 @@
                             <label class="form-label small fw-bold text-uppercase text-muted">Căutare</label>
                             <input @bind="searchText" class="form-control" placeholder="Model, descriere..." />
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label small fw-bold text-uppercase text-muted">Interval Preț</label>
                             <div class="d-flex gap-2 align-items-center">
@@ -133,24 +141,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-uppercase text-muted">Furnizor</label>
-                            <input type="text" @bind="supplierFilter" class="form-control" placeholder="Ex: Samsung">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold text-uppercase text-muted">Livrare</label>
-                            <input type="text" @bind="deliveryFilter" class="form-control" placeholder="Ex: Curier">
-                        </div>
-
-                        <div class="mb-4 form-check form-switch">
-                            <input type="checkbox" class="form-check-input" id="checkStoc" @bind="onlyInStock">
-                            <label class="form-check-label" for="checkStoc">Doar în stoc</label>
-                        </div>
-
-                        <hr />
-
-                        <div class="d-grid gap-2">
+                        <div class="d-grid gap-2 mt-4">
                             <button class="btn btn-primary" @onclick="ApplyFilters">Aplică Filtrele</button>
                             <button class="btn btn-outline-secondary btn-sm" @onclick="ResetFilters">Șterge tot</button>
                         </div>
@@ -161,8 +152,21 @@
     </div>
 </div>
 
+@if (showToast)
+{
+    <div class="toast-notification">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <div>
+                <strong>Succes!</strong><br />
+                @toastMessage
+            </div>
+        </div>
+    </div>
+}
+
 <style>
-    /* Mic efect de hover pentru carduri */
+    /* Stiluri pentru carduri */
     .hover-effect {
         transition: transform 0.2s;
     }
@@ -170,13 +174,56 @@
         .hover-effect:hover {
             transform: translateY(-5px);
         }
+
+    /* Stiluri pentru Notificare (Toast) */
+    .toast-notification {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #198754; /* Verde succes Bootstrap */
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 9999;
+        animation: fadeIn 0.5s, fadeOut 0.5s 2.5s forwards;
+        min-width: 250px;
+    }
+
+    /* Animații de intrare și ieșire */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+        }
+    }
 </style>
 
 @code {
     private Product[]? products;
-
-    // Variabilă pentru afișarea/ascunderea filtrelor
     private bool showFilters = false;
+
+    // Variabile pentru toast
+    private bool showToast = false;
+    private string toastMessage = "";
 
     // Variabile pentru filtre
     private string searchText = "";
@@ -191,7 +238,6 @@
         await LoadProducts();
     }
 
-    // Funcția care comută vizibilitatea filtrelor
     private void ToggleFilters()
     {
         showFilters = !showFilters;
@@ -240,6 +286,36 @@
     private void AddToCart(Product p)
     {
         CartService.AddProductToCart(p);
+        ShowToast($"Produsul '{p.Name}' a fost adăugat în coș!");
+    }
+
+    // Funcția Wishlist MODIFICATĂ
+    private async Task AddToWishlist(Product p)
+    {
+        // 1. Adaugă logic în spate
+        await WishlistService.AddToWishlist(p);
+
+        // 2. Afișează notificarea discretă (fără redirect, fără OK)
+        ShowToast($"Produsul '{p.Name}' a fost adăugat la favorite! ❤️");
+    }
+
+    // Funcție helper pentru afișarea notificării
+    private void ShowToast(string message)
+    {
+        toastMessage = message;
+        showToast = true;
+        StateHasChanged(); // Forțăm actualizarea UI ca să apară div-ul
+
+        // Ascundem notificarea după 3 secunde
+        var timer = new System.Timers.Timer(3000);
+        timer.Elapsed += (s, e) =>
+        {
+            showToast = false;
+            InvokeAsync(StateHasChanged); // Actualizăm UI din thread secundar
+            timer.Dispose();
+        };
+        timer.AutoReset = false;
+        timer.Start();
     }
 
     private async Task DeleteProduct(int id)
@@ -251,6 +327,7 @@
             if (response.IsSuccessStatusCode)
             {
                 await ApplyFilters();
+                ShowToast("Produsul a fost șters cu succes.");
             }
         }
     }
