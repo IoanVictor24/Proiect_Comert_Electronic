@@ -7,13 +7,10 @@ namespace ProiectCE.Client.Services
 {
     public class CartService
     {
-        // Evenimentul care anunță componentele când se modifică coșul
-        public event Action OnChange;
+        public event Action? OnChange;
 
-        // Am redenumit SelectedItems în CartItems pentru a fi compatibil cu pagina Razor
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
-        // Metodă pentru a adăuga un produs
         public void AddProductToCart(Product product)
         {
             var item = CartItems.FirstOrDefault(x => x.Product.Id == product.Id);
@@ -25,24 +22,37 @@ namespace ProiectCE.Client.Services
             {
                 item.Quantity++;
             }
-
-            // Anunțăm că s-a modificat ceva
             OnChange?.Invoke();
         }
 
-        // Metodă nouă pentru ȘTERGERE (pentru butonul cerut)
         public void StergeProdus(CartItem itemDeSters)
         {
             var item = CartItems.FirstOrDefault(p => p.Product.Id == itemDeSters.Product.Id);
             if (item != null)
             {
                 CartItems.Remove(item);
-                // Anunțăm că s-a modificat ceva
                 OnChange?.Invoke();
             }
         }
 
-        // Calculează prețul total
-        public decimal GetTotal() => CartItems.Sum(x => x.Product.Price * x.Quantity);
+        // --- MODIFICĂRI PENTRU LIVRARE ---
+
+        // 1. Calculăm subtotalul (doar produsele)
+        public decimal GetSubTotal() => CartItems.Sum(x => x.Product.Price * x.Quantity);
+
+        // 2. Calculăm costul de livrare (Exemplu: 20 RON, sau Gratuit dacă ai peste 500 RON în coș)
+        public decimal GetDeliveryCost()
+        {
+            var subTotal = GetSubTotal();
+            if (subTotal == 0) return 0; // Dacă e gol coșul, 0 lei
+            if (subTotal >= 500) return 0; // Gratuit peste 500 RON
+            return 20; // Altfel 20 RON
+        }
+
+        // 3. Totalul final (Produse + Livrare)
+        public decimal GetGrandTotal()
+        {
+            return GetSubTotal() + GetDeliveryCost();
+        }
     }
 }
